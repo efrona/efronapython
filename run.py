@@ -3,7 +3,6 @@ from flask import Flask, render_template, request, escape, send_file, url_for, s
 from werkzeug.utils import secure_filename
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
-#from vsearch import search4letters
 from datetime import timedelta
 import time
 import os
@@ -38,6 +37,7 @@ def check_b():
 
 app = Flask(__name__, static_url_path = '/static')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
+app.config['MAX_CONTENT_LENGTH'] = 500 * 1024 * 1024
 db = SQLAlchemy(app)
 
 @app.before_request
@@ -73,7 +73,6 @@ class User(db.Model):
 #text return
 @app.route('/', methods=['GET', 'POST'])
 def defalut():
-    '''
     if check_b() == 1:
         if not session.get('logged_in'):
             session['logged_in'] = False
@@ -98,8 +97,7 @@ def defalut():
             else :
                 isthere = False
             return render_template('mobile.html', showname = result, isthere = isthere, name = name)
-'''
-    return('www.efrona.kro.kr 로 주소 이전<br>24시간 웹서버 구축<br>재 회원가입 필요.')
+
 @app.route("/test")
 def test():
     if not session.get('logged_in'):
